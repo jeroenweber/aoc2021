@@ -25,7 +25,6 @@ def checklowpoint(row,col,directions):
         if check(row,col):
             lowscore += 1
     if (lowscore == len(directions)):
-        print(i,j,test[i][j])
         lowscore = int(test[row][col]) + increment
     else:
         lowscore = 0
@@ -49,6 +48,7 @@ for i in range(rows+1):
             total += checklowpoint(i, j, [RIGHT, DOWN, LEFT])
         elif bottomline(i,j):
             total += checklowpoint(i, j, [RIGHT, UP, LEFT])
+        #deze moet naar boven, maar heb ik geen zin meer in en dan de sides en als laatste de corners
         else:
             total += checklowpoint(i, j, [RIGHT, UP, DOWN, LEFT])
 
