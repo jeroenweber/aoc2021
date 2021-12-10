@@ -1,34 +1,56 @@
-test = ['2199943210','3987894921','9856789892','8767896789','9899965678']
-
-lowpointcorner = lambda a , b : (test[a][b+1] > test[a][b]) and (test[a+1][b] > test[a][b])
-lowpointtop = lambda a , b : lowpointcorner(a,b) and (test[a][b-1] > test[a][b])
-lowpointinline = lambda a, b : lowpointtop(a,b) and (test[a-1][b] > test[a][b])
-
+from readfromfile import readfromfile
+#test = ['2199943210','3987894921','9856789892','8767896789','9899965678']
+test = readfromfile("day91.txt")
 increment = 1
 total = 0
-rows = len(test)
-cols = len(test[0])
-corners = {(0,0),(0,cols-1),(rows-1,0),(rows-1,cols-1)}
-topline = lambda a, b : (a == 0) and (b > 0) and (b < cols -1)
-bottomline = lambda a, b : (a == rows -1) and (b > 0) and (b < cols -1)
-leftside = lambda a, b : (b == 0) and (a > 0) and (a < rows - 1)
-rightside = lambda a, b : (a == cols - 1) and (b > 0) and (b < rows - 1)
+rows = len(test)-1
+cols = len(test[0])-1
+topleftcorner = (0,0)
+toprightcorner = (0,cols)
+bottomleftcorner = (rows,0)
+bottomrightcorner = (rows,cols)
+topline = lambda a, b : (a == 0) and (b > 0) and (b < cols)
+bottomline = lambda a, b : (a == rows) and (b > 0) and (b < cols)
+leftside = lambda a, b : (a > 0) and (b == 0) and (b < rows)
+rightside = lambda a, b : (b == cols) and (a > 0) and (a < rows)
 
-corner = lambda a, b : (a,b) in corners
+LEFT = lambda row, col : test[row][col-1] > test[row][col]
+RIGHT = lambda row, col : test[row][col+1] > test[row][col]
+UP = lambda row, col : test[row-1][col] > test[row][col]
+DOWN = lambda row, col : test[row+1][col] > test[row][col]
 
-print(leftside(1,0))
+def checklowpoint(row,col,directions):
+    lowscore = 0
+    for check in directions:
+        if check(row,col):
+            lowscore += 1
+    if (lowscore == len(directions)):
+        print(i,j,test[i][j])
+        lowscore = int(test[row][col]) + increment
+    else:
+        lowscore = 0
+    return lowscore
 
-# for i in range(rows):
-#     for j in range(cols):
-#         if corner(i,j):
-#             if (lowpointcorner(i,j)):
-#                 total += test[i,j] + increment
-#         elif top(i,j):
-#             if (lowpointtop(i,j)):
-#                 total += test[i,j] + increment
-#         else:
-#             if (lowpointinline(i, j)):
-#                 total += test[i, j] + increment
+for i in range(rows+1):
+    for j in range(cols+1):
+        if (i,j) == topleftcorner:
+            total += checklowpoint(i,j,[DOWN,RIGHT])
+        elif (i,j) == toprightcorner:
+            total += checklowpoint(i,j,[DOWN,LEFT])
+        elif (i,j) == bottomleftcorner:
+            total += checklowpoint(i,j,[UP,RIGHT])
+        elif (i,j) == bottomrightcorner:
+            total += checklowpoint(i,j,[UP,LEFT])
+        elif leftside(i,j):
+            total += checklowpoint(i,j,[UP,DOWN,RIGHT])
+        elif rightside(i,j):
+            total += checklowpoint(i,j,[UP,DOWN,LEFT])
+        elif topline(i,j):
+            total += checklowpoint(i, j, [RIGHT, DOWN, LEFT])
+        elif bottomline(i,j):
+            total += checklowpoint(i, j, [RIGHT, UP, LEFT])
+        else:
+            total += checklowpoint(i, j, [RIGHT, UP, DOWN, LEFT])
 
 print(total)
 
