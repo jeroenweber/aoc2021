@@ -22,13 +22,11 @@ for power in data:
             gammarate[col] -= 1
 
 for i in range(rowlength):
-    #1 wins for gamma, 0 no contribution to epsilon
+    #1 wins for gamma, 0 wins for epsilon but no contribution
     if (gammarate[i] < 0):
         gammadecimal += pow(2,(rowlength - i - 1))
     #1 wins for epsilon, 0 no contribution to gamma
     else:
         epsilondecimal += pow(2,(rowlength - i - 1))
 
-print(gammadecimal)
-print(epsilondecimal)
 print(gammadecimal*epsilondecimal)
