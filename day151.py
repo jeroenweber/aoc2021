@@ -25,9 +25,6 @@ def creategraph():
             graph[point] = connections
 
 creategraph()
-print(graph)
 total = dijkstra(graph,tl,br)
-print(total)
-#og["s"] = [("t", 10), ("y", 5)]
 
-print(RIGHT(0,0))
+print(total)
