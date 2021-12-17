@@ -21,8 +21,8 @@ def dijkstra(g, s, t):
                 p[n] = curr_v
                 heapq.heappush(q, (cand_w, n))
 
-    print("predecessors: ", p)
-    print("delta: ", d)
+    #print("predecessors: ", p)
+    #print("delta: ", d)
     x = int(t[0])
     y = int(t[1])
     return d[(x,y+1)]
